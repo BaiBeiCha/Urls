@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки | MagicLink</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Magic🔗Link</div>
+        <div class="nav-links">
+            <a href="/home" class="nav-link">На главную</a>
+            <a href="/links" class="nav-link">Мои ссылки</a>
+            <a href="/settings" class="nav-link">Настройки</a>
+            <a href="/logout" class="nav-link accent">Выйти</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container settings-container">
+    <div class="settings-header">
+        <h1>Настройки <span class="magic-text">профиля</span></h1>
+    </div>
+
+    <div class="settings-section">
+        <div class="section-header">
+            <svg class="section-icon" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            <h2>Личная информация</h2>
+        </div>
+
+        <form th:action="@{/settings/profile}" method="post" class="settings-form">
+            <div class="form-group">
+                <label>Имя пользователя</label>
+                <input type="text"
+                       name="username"
+                       th:value="${user.username}"
+                       class="input-field"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Электронная почта</label>
+                <input type="email"
+                       name="email"
+                       th:value="${user.email}"
+                       class="input-field with-icon"
+                       required>
+            </div>
+
+            <div th:if="${profileStatus}" class="error-message" th:text="${profileStatus}"></div>
+
+            <button type="submit" class="magic-button small">
+                <span class="button-text">Сохранить изменения</span>
+                <div class="hover-effect"></div>
+            </button>
+        </form>
+    </div>
+
+    <div class="settings-section">
+        <div class="section-header">
+            <svg class="section-icon" viewBox="0 0 24 24">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+            </svg>
+            <h2>Безопасность</h2>
+        </div>
+
+        <form th:action="@{/settings/password}" method="post" class="settings-form">
+            <div class="form-group">
+                <label>Текущий пароль</label>
+                <input type="password"
+                       name="oldPassword"
+                       class="input-field"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Новый пароль</label>
+                <input type="password"
+                       name="password"
+                       class="input-field"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Подтвердите пароль</label>
+                <input type="password"
+                       name="passwordConfirm"
+                       class="input-field"
+                       required>
+            </div>
+
+            <div th:if="${passwordStatus}" class="error-message" th:text="${passwordStatus}"></div>
+
+            <button type="submit" class="magic-button small">
+                <span class="button-text">Сменить пароль</span>
+                <div class="hover-effect"></div>
+            </button>
+        </form>
+    </div>
+
+    <div class="settings-section">
+        <div class="section-header">
+            <svg class="section-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+            <h2>Подписка</h2>
+        </div>
+
+        <div class="subscription-status">
+            <div class="status-card" th:if="${user.subscriptionActive}">
+                <div class="status-active">
+                    <span class="status-icon">✨</span>
+                    <div class="status-text">
+                        <h3>Премиум подписка активна</h3>
+                        <p>Дата окончания: <span th:text="${user.getShowInSettingsSubscription().getExpiredDate()}"></span></p>
+                    </div>
+                </div>
+                <button class="magic-button outlined small">
+                    <span class="button-text">Продлить подписку</span>
+                </button>
+            </div>
+
+            <div class="status-card" th:unless="${user.subscriptionActive}">
+                <div class="status-inactive">
+                    <span class="status-icon">🔒</span>
+                    <div class="status-text">
+                        <h3>Подписка не активна</h3>
+                        <p>Доступ к премиум функциям ограничен</p>
+                    </div>
+                </div>
+                <button class="magic-button small">
+                    <span class="button-text">Приобрести подписку</span>
+                    <div class="hover-effect"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

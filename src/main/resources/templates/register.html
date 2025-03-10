@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | MagicLink</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Magic🔗Link</div>
+        <div class="nav-links">
+            <a href="/home" class="nav-link">На главную</a>
+            <a href="/login" class="nav-link accent">Вход</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container auth-container">
+    <div class="auth-header">
+        <h1>Создайте <span class="magic-text">волшебный</span> аккаунт</h1>
+    </div>
+
+    <form th:action="@{/register}" method="post" class="auth-form">
+        <div class="form-group">
+            <input type="text"
+                   name="username"
+                   placeholder="Ваше имя"
+                   class="input-field"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <input type="email"
+                   name="email"
+                   placeholder="Электронная почта"
+                   class="input-field"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <input type="password"
+                   name="password"
+                   placeholder="Пароль"
+                   class="input-field"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <input type="password"
+                   name="confirmPassword"
+                   placeholder="Подтвердите пароль"
+                   class="input-field"
+                   required>
+        </div>
+
+        <p class="auth-subtitle">Уже есть аккаунт? <a href="/login" class="accent-link">Войти</a></p>
+
+        <div th:if="${status}" class="error-message" th:text="${status}"></div>
+
+        <button type="submit" class="magic-button">
+            <span class="button-text">Создать аккаунт</span>
+            <div class="hover-effect"></div>
+        </button>
+    </form>
+</div>
+</body>
+</html>

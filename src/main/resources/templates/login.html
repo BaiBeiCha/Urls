@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход | MagicLink</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo">Magic🔗Link</div>
+    <div class="nav-links">
+      <a href="/home" class="nav-link">На главную</a>
+      <a href="/register" class="nav-link accent">Регистрация</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container auth-container">
+  <div class="auth-header">
+    <h1>С возвращением в <span class="magic-text">магию</span></h1>
+  </div>
+
+  <form th:action="@{/login}" method="post" class="auth-form">
+    <div class="form-group">
+      <input type="text"
+             name="username"
+             placeholder="Имя пользователя или электронная почта"
+             class="input-field"
+             required>
+    </div>
+
+    <div class="form-group">
+      <input type="password"
+             name="password"
+             placeholder="Пароль"
+             class="input-field"
+             required>
+    </div>
+
+    <div class="form-options">
+      <label class="checkbox">
+        <input type="checkbox" name="remember">
+        <span class="checkmark"></span>
+        Запомнить меня
+      </label>
+      <a href="/forgot-password" class="accent-link">Забыли пароль?</a>
+    </div>
+
+    <p class="auth-subtitle">Ещё нет аккаунта? <a href="/register" class="accent-link">Зарегистрироваться</a></p>
+
+    <button type="submit" class="magic-button">
+      <span class="button-text">Войти в аккаунт</span>
+      <div class="hover-effect"></div>
+    </button>
+  </form>
+</div>
+</body>
+</html>

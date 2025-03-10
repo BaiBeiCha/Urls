@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: Urls
+
+  datasource:
+    url: jdbc:postgresql://urls-db:5432/urls
+    username: urls
+    password: urlspass
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        dialect:
+          org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8000
+
+urls:
+  base: "localhost:8000"
+  free-links-max-count: 10
+  ads-removal-price: 100

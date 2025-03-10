@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новая ссылка | MagicLink</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Magic🔗Link</div>
+        <div class="nav-links">
+            <a href="/links" class="nav-link">Назад к списку</a>
+            <a href="/settings" class="nav-link">Настройки</a>
+            <a href="/logout" class="nav-link accent">Выйти</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container new-link-container">
+    <div class="new-link-header">
+        <h1>Создать новую <span class="magic-text">магическую</span> ссылку</h1>
+
+        <div class="limit-info" th:if="${!hasSubscription}">
+            <div class="limit-card" th:classappend="${remainingFreeLinks <= 0} ? 'limit-danger' : 'limit-normal'">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+                <div class="limit-text">
+                    <span th:if="${remainingFreeLinks > 0}">
+                        Осталось бесплатных ссылок:
+                        <strong th:text="${remainingFreeLinks}"></strong>
+                    </span>
+                    <span th:if="${remainingFreeLinks <= 0}">
+                        Лимит бесплатных ссылок исчерпан!
+                    </span>
+                </div>
+            </div>
+
+            <a th:if="${remainingFreeLinks <= 0}" href="/subscription" class="upgrade-banner">
+                <div class="banner-content">
+                    <span class="magic-text">Перейти на Премиум</span>
+                    <span>→ Безлимитное создание ссылок</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <form th:action="@{/links}" method="post" class="new-link-form" th:if="${hasSubscription or remainingFreeLinks > 0}">
+        <div class="form-group">
+            <input type="url"
+                   name="originalUrl"
+                   placeholder="Введите URL для сокращения"
+                   class="input-field"
+                   required>
+        </div>
+
+        <div class="form-group custom-slug">
+            <div class="slug-input">
+                <span class="domain-part" th:text="${base}"></span>
+                <input type="text"
+                       name="shortId"
+                       placeholder="ваш-путь"
+                       class="input-field"
+                       maxlength="32"
+                       pattern="[A-Za-z0-9_-]+">
+            </div>
+        </div>
+
+        <div th:if="${error}" class="error-message">
+            <span th:text="${error}"></span>
+        </div>
+
+        <button type="submit" class="magic-button" th:disabled="${!hasSubscription and remainingFreeLinks <= 0}">
+            <span class="button-text">Создать магию</span>
+            <div class="hover-effect"></div>
+        </button>
+    </form>
+
+    <div th:if="${!hasSubscription and remainingFreeLinks <= 0}" class="limit-exceeded">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <p>Для создания новых ссылок требуется премиум-подписка</p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выход | MagicLink</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Magic🔗Link</div>
+        <div class="nav-links">
+            <a href="/home" class="nav-link">На главную</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container logout-container">
+    <div class="logout-content">
+        <div class="logout-icon">
+            <svg viewBox="0 0 24 24" width="64" height="64">
+                <path d="M14.08 15.59L16.67 13H7v-2h9.67l-2.59-2.59L15.5 7l5 5-5 5-1.42-1.41zM19 3a2 2 0 012 2v4.67l-2-2V5H5v14h14v-2.67l2-2V19a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14z"/>
+            </svg>
+        </div>
+
+        <h1 class="logout-title">Выход из аккаунта</h1>
+        <p class="logout-text">Вы уверены что хотите выйти из аккаунта <span class="magic-text" th:text="${username}">User123</span>?</p>
+
+        <form th:action="@{/logout}" method="post" class="logout-actions">
+            <button type="submit" class="magic-button danger">
+                <span class="button-text">Да, выйти</span>
+                <div class="hover-effect"></div>
+            </button>
+            <a href="/home" class="magic-button outlined">
+                <span class="button-text">Отмена</span>
+            </a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

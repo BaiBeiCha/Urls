@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои ссылки | MagicLink</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Magic🔗Link</div>
+        <div class="nav-links">
+            <a href="/links" class="nav-link active">Мои ссылки</a>
+            <a href="/settings" class="nav-link">Настройки</a>
+            <a href="/logout" class="nav-link accent">Выйти</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container dashboard-container">
+    <div class="dashboard-header center">
+        <h1 class="center">Мои <span class="magic-text">магические</span> ссылки</h1>
+    </div>
+
+    <div class="new-link-button-wrapper">
+        <a href="/links/new" class="magic-button small center">
+            <span class="button-text">Новая ссылка</span>
+            <div class="hover-effect"></div>
+        </a>
+    </div>
+
+    <div class="links-list">
+        <div class="link-item" th:each="link : ${links}">
+            <div class="link-info">
+                <a th:href="${baseUrl} + '/' + ${link.shortId}" class="short-url" target="_blank" th:text="${link.shortId}"></a>
+                <div class="original-url" th:text="${link.originalUrl}"></div>
+                <div class="link-meta">
+                    <span class="meta-item" th:text="'Создано ' + ${link.createdAt}"></span>
+                    <span class="meta-item" th:text="'Переходы: ' + ${link.clicks}"></span>
+                </div>
+            </div>
+            <div class="link-actions">
+                <a th:href="@{/links/{id}/edit(id=${link.id})}" class="icon-button edit">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                    </svg>
+                </a>
+                <form th:action="@{/links/{id}/delete(id=${link.id})}" method="post">
+                    <button type="submit" class="icon-button delete">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(links)}" class="empty-state">
+            <svg viewBox="0 0 24 24">
+                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+            </svg>
+            <p>У вас пока нет созданных ссылок</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление ссылкой | MagicLink</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Magic🔗Link</div>
+        <div class="nav-links">
+            <a href="/links" class="nav-link">Назад к списку</a>
+            <a href="/settings" class="nav-link">Настройки</a>
+            <a href="/logout" class="nav-link accent">Выйти</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container edit-link-container">
+    <div class="edit-link-header">
+        <h1>Управление <span class="magic-text">ссылкой</span></h1>
+        <a th:href="${baseUrl} + '/' + ${link.shortId}" class="short-url" target="_blank" th:text="${link.shortId}"></a>
+    </div>
+
+    <form th:action="@{/links/{id}(id=${link.id})}" method="post" class="edit-link-form">
+        <div class="form-group">
+            <label>Оригинальный URL</label>
+            <input type="url"
+                   name="originalUrl"
+                   th:value="${link.originalUrl}"
+                   class="input-field"
+                   required>
+
+            <label>Короткий URL</label>
+            <input type="text"
+                   name="shortId"
+                   th:value="${link.shortId}"
+                   class="input-field"
+                   required>
+        </div>
+
+        <div class="ad-settings">
+            <h3>Управление рекламой</h3>
+
+            <div th:if="${user.hasSubscription()}" class="subscription-settings">
+                <label class="toggle-switch">
+                    <input type="checkbox" name="noAds" th:checked="${link.noAds}">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label">Отключить рекламу для этой ссылки</span>
+                <p class="hint">Доступно по вашей подписке</p>
+            </div>
+
+            <div th:unless="${user.hasSubscription()}">
+                <div th:if="${link.noAds}" class="ad-status">
+                    <p class="success-text">✅ Реклама для этой ссылки отключена</p>
+                </div>
+
+                <div th:unless="${link.noAds}" class="purchase-options">
+                    <p class="ad-warning">При переходе по ссылке будет показываться реклама</p>
+                    <div class="purchase-ad-removal">
+                        <p class="offer-text">Убрать рекламу всего за
+                            <span class="price" th:text="${removalPrice} + ' ₽'"></span>
+                        </p>
+                        <form th:action="@{/links/{id}/purchase-ad-removal(id=${link.id})}" method="post">
+                            <button type="submit" class="magic-button success small">
+                                <span class="button-text">Купить навсегда</span>
+                                <div class="hover-effect"></div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="link-stats">
+            <div class="stat-item">
+                <div class="stat-label">Создано</div>
+                <div class="stat-value" th:text="${link.createdAt}"></div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Переходов</div>
+                <div class="stat-value" th:text="${link.clicks}"></div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="magic-button small">
+                <span class="button-text">Сохранить изменения</span>
+                <div class="hover-effect"></div>
+            </button>
+            <a th:href="@{/links}" class="magic-button outlined small">Отменить</a>
+        </div>
+    </form>
+
+    <div class="danger-zone">
+        <h3>Опасная зона</h3>
+        <form th:action="@{/links/{id}/delete(id=${link.id})}" method="post">
+            <button type="submit" class="magic-button danger small">
+                <span class="button-text">Удалить ссылку</span>
+                <div class="hover-effect"></div>
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

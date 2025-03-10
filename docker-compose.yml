@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  urls-db:
+    image: postgres:12
+    environment:
+      POSTGRES_DB: urls
+      POSTGRES_USER: urls
+      POSTGRES_PASSWORD: urlspass
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U urls -d urls"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+    networks:
+      - urls-network
+
+  urls-app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://urls-db:5432/urls
+      SPRING_DATASOURCE_USERNAME: urls
+      SPRING_DATASOURCE_PASSWORD: urlspass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    depends_on:
+      urls-db:
+        condition: service_healthy
+    networks:
+      - urls-network
+
+networks:
+  urls-network:
+    driver: bridge

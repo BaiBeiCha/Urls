@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Переход по ссылке | MagicLink</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script th:inline="javascript">
+        <![CDATA[
+        const redirect = () => {
+            window.location.href = [[${link.originalUrl}]];
+        };
+
+        let seconds = 5;
+        const startTimer = () => {
+            const timerElement = document.getElementById('timer');
+            const interval = setInterval(() => {
+                seconds--;
+                timerElement.textContent = seconds;
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    document.getElementById('continue-btn').disabled = false;
+                    document.getElementById('timer-text').style.display = 'none';
+                }
+            }, 1000);
+        };
+        ]]>
+    </script>
+</head>
+<body onload="startTimer()">
+<div class="ad-container">
+    <div class="ad-header">
+        <div class="logo">Magic🔗Link</div>
+        <div class="ad-notice">
+            <span class="warning-icon">⚠️</span>
+            <span>Рекламный переход</span>
+        </div>
+    </div>
+
+    <main class="ad-content">
+        <div class="ad-warning-message">
+            <p>Пожалуйста, подождите <span id="timer-text"><span id="timer">5</span> секунд</span></p>
+            <p>Поддержка сервиса осуществляется за счёт показа рекламы</p>
+        </div>
+
+        <!-- Рекламный блок -->
+        <div class="ad-banner" id="ad-banner">
+            <!-- Пример интеграции с рекламной сетью -->
+            <iframe th:if="${adType == 'banner'}"
+                    src="https://example-ads.com/banner?id=123"
+                    frameborder="0"
+                    scrolling="no"
+                    class="ad-frame"></iframe>
+
+            <!-- Пример текстовой рекламы -->
+            <div th:if="${adType == 'text'}" class="text-ad">
+                <h3>Рекламное предложение</h3>
+                <p th:text="${adContent}">Специальное предложение! Купите сейчас и получите скидку!</p>
+                <a th:href="${adLink}" class="ad-link" target="_blank">Подробнее</a>
+            </div>
+        </div>
+
+        <button id="continue-btn"
+                class="magic-button"
+                onclick="redirect()"
+                disabled>
+            <span class="button-text">Продолжить</span>
+            <div class="hover-effect"></div>
+        </button>
+    </main>
+
+    <div class="ad-footer">
+        <p>Реклама помогает поддерживать бесплатный сервис</p>
+        <a href="/premium" class="ad-free-link">
+            <span class="magic-text">Перейти на безрекламную версию</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    setTimeout(() => {
+        if (document.getElementById('ad-banner').clientHeight === 0) {
+            alert('Пожалуйста, отключите AdBlock для поддержки сервиса!');
+        }
+    }, 1000);
+</script>
+</body>
+</html>

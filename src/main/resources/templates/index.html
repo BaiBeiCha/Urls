@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сократитель URL | MagicLink</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Magic🔗Link</div>
+        <div class="nav-links">
+            <a th:if="${#authorization.expression('isAuthenticated()')}" href="/links" class="nav-link">Мои ссылки</a>
+            <a th:if="${#authorization.expression('isAuthenticated()')}" href="/settings" class="nav-link">Настройки</a>
+            <a th:unless="${#authorization.expression('isAuthenticated()')}" href="/register" class="nav-link">Регистрация</a>
+            <a th:unless="${#authorization.expression('isAuthenticated()')}" href="/login" class="nav-link accent">Вход</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Сократите вашу ссылку до <span class="magic-text">магической</span></h1>
+
+    <form th:action="@{/home}" method="post" class="url-form">
+        <div class="form-group">
+            <input type="text"
+                   id="originalUrl"
+                   name="rawUrl"
+                   th:value="${url}"
+                   placeholder="Вставьте длинную ссылку здесь..."
+                   class="input-field"
+                   required>
+        </div>
+        <button type="submit" class="magic-button">
+            <span class="button-text">Создать магию</span>
+            <div class="hover-effect"></div>
+        </button>
+    </form>
+
+    <div id="result" th:if="${shorter != null}" class="result-box">
+        <div class="result-text">Ваша волшебная ссылка:</div>
+        <a th:href="${'http://' + shorter}" th:text="${shorter}" class="short-url glow" target="_blank"></a>
+    </div>
+</div>
+</body>
+</html>
