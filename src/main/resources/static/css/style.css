@@ -1106,6 +1106,59 @@ input:checked + .slider:before {
     margin-top: 1rem;
 }
 
+/* Google AdSense Стили */
+.google-adsense {
+    margin: 1.5rem auto;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e3e6e9;
+}
+
+.google-adsense ins {
+    margin: 0 auto;
+}
+
+.ad-warning {
+    color: #dc3545;
+    padding: 1.5rem;
+    border: 2px solid #dc3545;
+    border-radius: 12px;
+    text-align: center;
+    background: #fff5f5;
+}
+
+.ad-warning h3 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.ad-warning button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.ad-warning button:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .google-adsense {
+        min-height: 200px;
+        padding: 10px;
+    }
+}
+
 @media (max-width: 768px) {
     .ad-settings {
         padding: 1rem;

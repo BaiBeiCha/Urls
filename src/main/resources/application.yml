@@ -3,7 +3,7 @@ spring:
     name: Urls
 
   datasource:
-    url: jdbc:postgresql://urls-db:5432/urls
+    url: jdbc:postgresql://localhost:5432/urls
     username: urls
     password: urlspass
     driver-class-name: org.postgresql.Driver
@@ -26,3 +26,4 @@ urls:
   base: "localhost:8000"
   free-links-max-count: 10
   ads-removal-price: 100
+  link-redirect-time: 5
